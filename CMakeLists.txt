@@ -3,21 +3,42 @@ project(opengl)
 
 set(CMAKE_CXX_STANDARD 20)
 
-# Find OpenGL
-find_package(OpenGL REQUIRED)
-
 include(FetchContent)
 
+# GLFW setup (from before)
 FetchContent_Declare(
         glfw
         GIT_REPOSITORY https://github.com/glfw/glfw.git
-        GIT_TAG        master    # This will get the latest commit
+        GIT_TAG        master
 )
 
-FetchContent_MakeAvailable(glfw)
+# GLAD setup with latest commit
+FetchContent_Declare(
+        glad
+        GIT_REPOSITORY https://github.com/Dav1dde/glad.git
+        GIT_TAG        glad2
+)
+
+FetchContent_MakeAvailable(glfw glad)
+
+# Configure GLAD
+add_subdirectory(${glad_SOURCE_DIR}/cmake glad_cmake)
+glad_add_library(glad_lib API gl:core=4.6)
+
+# Find OpenGL
+find_package(OpenGL REQUIRED)
 
 # Create your executable
 add_executable(your_program src/main.cpp)
 
-# Link against both GLFW and OpenGL
-target_link_libraries(your_program PRIVATE glfw OpenGL::GL)
+# Add include directories for GLAD
+target_include_directories(your_program PRIVATE
+        ${glad_BINARY_DIR}/include
+)
+
+# Link everything
+target_link_libraries(your_program PRIVATE
+        glfw
+        OpenGL::GL
+        glad_lib
+)
