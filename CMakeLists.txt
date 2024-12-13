@@ -3,6 +3,9 @@ project(opengl)
 
 set(CMAKE_CXX_STANDARD 20)
 
+# Find OpenGL
+find_package(OpenGL REQUIRED)
+
 include(FetchContent)
 
 FetchContent_Declare(
@@ -16,5 +19,5 @@ FetchContent_MakeAvailable(glfw)
 # Create your executable
 add_executable(your_program src/main.cpp)
 
-# Link against GLFW
-target_link_libraries(your_program PRIVATE glfw)
+# Link against both GLFW and OpenGL
+target_link_libraries(your_program PRIVATE glfw OpenGL::GL)
