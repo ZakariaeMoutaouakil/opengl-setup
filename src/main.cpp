@@ -1,3 +1,4 @@
+// This code is from https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/1.1.hello_window/hello_window.cpp
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
 
